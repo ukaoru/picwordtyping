@@ -1,4 +1,4 @@
-# Time-stamp: <2023-02-27 14:36:59 uchik>
+# Time-stamp: <2023-02-27 21:44:48 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -16,10 +16,10 @@ def gonext():
     if input := st.session_state.txt:
         ans = st.session_state.ans
         if input.lower() == ans.lower():
-            st.write(f'{idx}: "{ans}" Correct!')
+            st.write(f'"{ans}" Correct!')
             st.session_state.point += 1
         else:
-            st.write(f'{idx}: It is not "{input}", but "{ans}"')
+            st.write(f'It is not "{input}", but "{ans}"')
     st.session_state.txt  = ''  # to clear text_input box
     st.session_state.idx += 1
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
@@ -30,9 +30,10 @@ def main():
     pic = st.session_state.picL[idx]
     pf = pathlib.Path(pic)
     ans = st.session_state.ans = pf.parent.name
-    print(idx, ans, pf.name)
-    
-    st.text_input('What is this?', '', key='txt', on_change=gonext)
+    print(idx+1, ans, pf.name)
+
+    txtstr = f'{idx+1} : What is this?'
+    st.text_input(txtstr, '', key='txt', on_change=gonext)
     img = Image.open(pic)
     img.thumbnail((250, 250), Image.LANCZOS)
     imgArea.image(img) #, caption = pf.name)

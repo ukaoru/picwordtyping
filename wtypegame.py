@@ -1,26 +1,33 @@
-# Time-stamp: <2023-02-27 21:44:48 uchik>
+# Time-stamp: <2023-03-02 14:47:54 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
 
 """ 画像タイピング using streamlit
-needs: pip install streamlit
+needs: pip install streamlit, gTTS
+requires: gTTS
 """
 
 import glob, random, pathlib
 import streamlit as st
 from PIL import Image
+import gtts                     
 
 def gonext():
+    tmpaudiofile = '_tmp.mp3'
     idx = st.session_state.idx
     if input := st.session_state.txt:
         ans = st.session_state.ans
         if input.lower() == ans.lower():
-            st.write(f'"{ans}" Correct!')
+            st.write(f'{idx}: "{ans}" Correct!')
             st.session_state.point += 1
         else:
-            st.write(f'It is not "{input}", but "{ans}"')
+            st.write(f'{idx}: It is not "{input}", but "{ans}"')
+
     st.session_state.txt  = ''  # to clear text_input box
+    tts = gtts.gTTS(ans)
+    tts.save(tmpaudiofile)
+    st.audio(tmpaudiofile)
     st.session_state.idx += 1
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
 
@@ -30,10 +37,9 @@ def main():
     pic = st.session_state.picL[idx]
     pf = pathlib.Path(pic)
     ans = st.session_state.ans = pf.parent.name
-    print(idx+1, ans, pf.name)
-
-    txtstr = f'{idx+1} : What is this?'
-    st.text_input(txtstr, '', key='txt', on_change=gonext)
+    print(idx, ans, pf.name)
+    
+    st.text_input('What is this?', '', key='txt', on_change=gonext)
     img = Image.open(pic)
     img.thumbnail((250, 250), Image.LANCZOS)
     imgArea.image(img) #, caption = pf.name)

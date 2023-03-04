@@ -1,9 +1,9 @@
-# Time-stamp: <2023-03-02 14:47:54 uchik>
+# Time-stamp: <2023-03-04 16:18:29 hermite>
 
 #!/usr/bin/env python
 # coding: utf-8
 
-""" 画像タイピング using streamlit
+""" wtypegame = Picwordtyping ｰ using streamlit
 needs: pip install streamlit, gTTS
 requires: gTTS
 """
@@ -11,13 +11,27 @@ requires: gTTS
 import glob, random, pathlib
 import streamlit as st
 from PIL import Image
-import gtts                     
+import gtts                     # Google TTS for pronunciation
 
 def gonext():
+    st.session_state.idx += 1
+    st.session_state.ans = ''
+    st.text_input('What is this?', '', key='txt', on_change=checkspell)
+    showimg()
+    print(st.session_state.idx, st.session_state.ans)
+
+def showimg():
+    pic = st.session_state.picL[st.session_state.idx]
+    st.session_state.ans = pathlib.Path(pic).parent.name
+    img = Image.open(pic)
+    img.thumbnail((250, 250), Image.Resampling.LANCZOS)
+    st.image(img)
+    
+def checkspell():
     tmpaudiofile = '_tmp.mp3'
-    idx = st.session_state.idx
+    showimg()
+    idx, ans = st.session_state.idx, st.session_state.ans
     if input := st.session_state.txt:
-        ans = st.session_state.ans
         if input.lower() == ans.lower():
             st.write(f'{idx}: "{ans}" Correct!')
             st.session_state.point += 1
@@ -28,22 +42,15 @@ def gonext():
     tts = gtts.gTTS(ans)
     tts.save(tmpaudiofile)
     st.audio(tmpaudiofile)
-    st.session_state.idx += 1
-    st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
+    st.write(f'Score: {st.session_state.point} / {idx+1}')
+    st.button("Next", on_click=gonext)
 
 def main():
-    imgArea = st.empty()
-    idx = st.session_state.idx
-    pic = st.session_state.picL[idx]
-    pf = pathlib.Path(pic)
-    ans = st.session_state.ans = pf.parent.name
-    print(idx, ans, pf.name)
-    
-    st.text_input('What is this?', '', key='txt', on_change=gonext)
-    img = Image.open(pic)
-    img.thumbnail((250, 250), Image.LANCZOS)
-    imgArea.image(img) #, caption = pf.name)
-        
+    if st.session_state.ans == '':
+        st.text_input('What is this?', '', key='txt', on_change=checkspell)
+        showimg()
+        print(st.session_state.idx, st.session_state.ans)
+
 if __name__ == "__main__":
     if not 'idx' in st.session_state:
         st.session_state.idx = 0
@@ -55,6 +62,8 @@ if __name__ == "__main__":
         print(len(picL), [pathlib.Path(f).parent.name for f in picL[:3]])
         st.session_state.picL = picL
         st.session_state.point = 0
-        
+        st.session_state.ans = ''
+
     main()
+            
     

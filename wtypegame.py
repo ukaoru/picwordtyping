@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-04 16:18:29 hermite>
+# Time-stamp: <2023-03-04 16:24:31 hermite>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -18,6 +18,7 @@ def gonext():
     st.session_state.ans = ''
     st.text_input('What is this?', '', key='txt', on_change=checkspell)
     showimg()
+    st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
     print(st.session_state.idx, st.session_state.ans)
 
 def showimg():

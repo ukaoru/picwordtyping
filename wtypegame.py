@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-09 09:01:35 uchik>
+# Time-stamp: <2023-03-09 09:49:07 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -44,6 +44,7 @@ def checkspell():
     gtts.gTTS(ans).save(tmpaudiofile)
     st.audio(tmpaudiofile)
     st.write(f'Score: {st.session_state.point} / {idx+1}')
+    if idx % 20 == 19: st.balloons()
     st.button("Next", on_click=gonext)
 
 # --------------- main start

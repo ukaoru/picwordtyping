@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-05 02:53:16 hermite>
+# Time-stamp: <2023-03-09 09:01:35 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -18,7 +18,7 @@ def showimg():
     pic = st.session_state.picL[st.session_state.idx]
     st.session_state.ans = pathlib.Path(pic).parent.name
     img = Image.open(pic)
-    img.thumbnail((250, 250), Image.Resampling.LANCZOS)
+    img.thumbnail((200, 200), Image.Resampling.LANCZOS)
     st.image(img)
 
 # go to the next image, called by the next button

@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-11 13:34:34 uchik>
+# Time-stamp: <2023-03-11 19:54:15 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -26,6 +26,7 @@ def gonext():
     st.session_state.idx += 1
     askword()
 
+# show an image and ask, called from init and gonext()
 def askword():
     st.text_input('What is this?', '', key='txt', on_change=checkspell)
     showimg()
@@ -57,7 +58,6 @@ def checkspell():
         st.write(f'{idx}: This is "{ans}"')
         st.audio(tmpaudiofile)
         st.text_input('Type yourself', '', key='txt1', on_change=gonext)
-        #st.sidebar.button("Again", on_click=askword)
 
 # --------------- main start
 if __name__ == "__main__":
@@ -70,14 +70,10 @@ if __name__ == "__main__":
         random.shuffle(picL)
         st.session_state.picL = picL
         st.session_state.point = st.session_state.idx = 0
+        
+        askword()
         infostr = f'Nwords: {len(dirL)}, Npics: {len(picL)}'
         print(infostr)
-        #print(len(picL), [pathlib.Path(f).parent.name for f in picL[:3]])
-
-        st.text_input('What is this?', '', key='txt', on_change=checkspell)
-        showimg()
-        st.button("Hint", on_click=checkspell)
-        print(st.session_state.idx, st.session_state.ans)
         st.write(infostr)
 # --------------- main end            
     

@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-12 06:57:35 uchik>
+# Time-stamp: <2023-03-12 07:39:59 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -59,11 +59,9 @@ def checkspell():
             st.write(f'{idx}: "{ans}" Correct!')
             st.session_state.point += 1
             st.button("Next", on_click=gonext)
-            st.write(f'Score: {st.session_state.point} / {idx+1}')
         else:
             st.write(f'{idx}: It is not "{input}", but "{ans}"')
             st.text_input('Type yourself', '', key='txt1', on_change=gonext)
-            st.write(f'Score: {st.session_state.point} / {idx+1}')
         st.session_state.txt  = ''  # to clear text_input box
         if idx % 20 == 19: st.balloons()
     else:
@@ -72,6 +70,7 @@ def checkspell():
     gtts.gTTS(ans).save(tmpaudiofile)
     soundautoplay(tmpaudiofile)
     #st.audio(tmpaudiofile)
+    st.write(f'Score: {st.session_state.point} / {idx+1}')
 
 # --------------- main start
 if __name__ == "__main__":

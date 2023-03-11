@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-11 19:54:15 uchik>
+# Time-stamp: <2023-03-12 06:57:35 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -12,6 +12,21 @@ import glob, random, pathlib
 import streamlit as st
 from PIL import Image
 import gtts                     # Google TTS for pronunciation
+import base64, time             # for pronunciation autoplay
+
+# autoplay pronunciation
+def soundautoplay(audiofile):
+    audio_placeholder = st.empty()
+    with open(audiofile, "rb") as f:
+        contents = f.read()
+    audio_str = "data:audio/ogg;base64,%s"%(base64.b64encode(contents).decode())
+    audio_html = """<audio autoplay=True>
+                    <source src="%s" type="audio/ogg" autoplay=True>
+                    Your browser does not support the audio element.
+                    </audio>""" % audio_str
+    audio_placeholder.empty()
+    time.sleep(0.5)             # need this
+    audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
 
 # show an image
 def showimg():
@@ -39,25 +54,24 @@ def checkspell():
     tmpaudiofile = '_tmp.mp3'
     showimg()
     idx, ans = st.session_state.idx, st.session_state.ans
-    gtts.gTTS(ans).save(tmpaudiofile)
     if input := st.session_state.txt:
         if input.lower() == ans.lower():
             st.write(f'{idx}: "{ans}" Correct!')
-            st.audio(tmpaudiofile)
             st.session_state.point += 1
             st.button("Next", on_click=gonext)
             st.write(f'Score: {st.session_state.point} / {idx+1}')
         else:
             st.write(f'{idx}: It is not "{input}", but "{ans}"')
-            st.audio(tmpaudiofile)
             st.text_input('Type yourself', '', key='txt1', on_change=gonext)
             st.write(f'Score: {st.session_state.point} / {idx+1}')
         st.session_state.txt  = ''  # to clear text_input box
         if idx % 20 == 19: st.balloons()
     else:
         st.write(f'{idx}: This is "{ans}"')
-        st.audio(tmpaudiofile)
         st.text_input('Type yourself', '', key='txt1', on_change=gonext)
+    gtts.gTTS(ans).save(tmpaudiofile)
+    soundautoplay(tmpaudiofile)
+    #st.audio(tmpaudiofile)
 
 # --------------- main start
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-09 09:49:07 uchik>
+# Time-stamp: <2023-03-11 13:34:34 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -24,8 +24,12 @@ def showimg():
 # go to the next image, called by the next button
 def gonext():
     st.session_state.idx += 1
+    askword()
+
+def askword():
     st.text_input('What is this?', '', key='txt', on_change=checkspell)
     showimg()
+    st.button("Hint", on_click=checkspell)
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
     print(st.session_state.idx, st.session_state.ans)
 
@@ -34,18 +38,26 @@ def checkspell():
     tmpaudiofile = '_tmp.mp3'
     showimg()
     idx, ans = st.session_state.idx, st.session_state.ans
+    gtts.gTTS(ans).save(tmpaudiofile)
     if input := st.session_state.txt:
         if input.lower() == ans.lower():
             st.write(f'{idx}: "{ans}" Correct!')
+            st.audio(tmpaudiofile)
             st.session_state.point += 1
+            st.button("Next", on_click=gonext)
+            st.write(f'Score: {st.session_state.point} / {idx+1}')
         else:
             st.write(f'{idx}: It is not "{input}", but "{ans}"')
-    st.session_state.txt  = ''  # to clear text_input box
-    gtts.gTTS(ans).save(tmpaudiofile)
-    st.audio(tmpaudiofile)
-    st.write(f'Score: {st.session_state.point} / {idx+1}')
-    if idx % 20 == 19: st.balloons()
-    st.button("Next", on_click=gonext)
+            st.audio(tmpaudiofile)
+            st.text_input('Type yourself', '', key='txt1', on_change=gonext)
+            st.write(f'Score: {st.session_state.point} / {idx+1}')
+        st.session_state.txt  = ''  # to clear text_input box
+        if idx % 20 == 19: st.balloons()
+    else:
+        st.write(f'{idx}: This is "{ans}"')
+        st.audio(tmpaudiofile)
+        st.text_input('Type yourself', '', key='txt1', on_change=gonext)
+        #st.sidebar.button("Again", on_click=askword)
 
 # --------------- main start
 if __name__ == "__main__":
@@ -64,6 +76,7 @@ if __name__ == "__main__":
 
         st.text_input('What is this?', '', key='txt', on_change=checkspell)
         showimg()
+        st.button("Hint", on_click=checkspell)
         print(st.session_state.idx, st.session_state.ans)
         st.write(infostr)
 # --------------- main end            

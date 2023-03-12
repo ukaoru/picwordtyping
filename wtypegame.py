@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-12 07:39:59 uchik>
+# Time-stamp: <2023-03-12 10:48:50 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -67,10 +67,10 @@ def checkspell():
     else:
         st.write(f'{idx}: This is "{ans}"')
         st.text_input('Type yourself', '', key='txt1', on_change=gonext)
+    st.write(f'Score: {st.session_state.point} / {idx+1}')
     gtts.gTTS(ans).save(tmpaudiofile)
     soundautoplay(tmpaudiofile)
-    #st.audio(tmpaudiofile)
-    st.write(f'Score: {st.session_state.point} / {idx+1}')
+    st.audio(tmpaudiofile)
 
 # --------------- main start
 if __name__ == "__main__":

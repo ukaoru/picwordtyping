@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-22 05:13:00 uchik>
+# Time-stamp: <2023-03-22 05:20:26 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -45,7 +45,7 @@ def askword():
     showimg()
     st.button("Hint", on_click=checkspell)
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
-    print(st.session_state.idx, st.session_state.ans)
+    #print(st.session_state.idx, st.session_state.ans)
 
 # check the spelling, called by the text_input ENTER
 def checkspell():
@@ -83,9 +83,7 @@ if __name__ == "__main__":
         st.session_state.point = st.session_state.idx = 0
         
         askword()
-        infostr = f'Nwords: {len(dirL)}, Npics: {len(picL)}'
-        print(infostr)
-        st.write(infostr)
+        st.write(f'Nwords: {len(dirL)}, Npics: {len(picL)}')
         st.markdown('&copy; 2023 NPO Challengepro')
 # --------------- main end            
     

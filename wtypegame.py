@@ -1,4 +1,4 @@
-# Time-stamp: <2023-03-13 07:12:46 uchik>
+# Time-stamp: <2023-03-22 05:13:00 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -86,5 +86,6 @@ if __name__ == "__main__":
         infostr = f'Nwords: {len(dirL)}, Npics: {len(picL)}'
         print(infostr)
         st.write(infostr)
+        st.markdown('&copy; 2023 NPO Challengepro')
 # --------------- main end            
     

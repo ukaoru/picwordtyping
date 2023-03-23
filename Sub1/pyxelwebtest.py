@@ -1,34 +1,58 @@
-# Time-stamp: <2022-08-02 06:26:47 uchik>
+# Time-stamp: <2022-07-30 15:06:09 kaoru>
 
-""" tower1c.py 描画頻度を設定可能
+""" suikawariKB.py 方向キー版のスイカ割り
 """
+#!/usr/bin/env python
 # coding: utf-8
-import pyxel
-fps = 5                         # 1/fps = 0.2sec毎に再描画
 
-def redrawtower(n):
-    pyxel.cls(7)
-    pyxel.trib(120, 10, 100, 100, 140, 100, 0)
-    cx, cy = 70-50*pyxel.cos(n), 90-50*pyxel.sin(n)
-    pyxel.circ(cx, cy, 10, 8)
-    pyxel.line(cx, cy, 70, 90, 10)
-    pyxel.line(30, 90, 70, 90, 9)
-    pyxel.rect(90, cy, 60, 10, 5)
-    pyxel.text(103, cy+2, f'{pyxel.frame_count} frames', 10)
+import os
+import pyxel
+
+CN1 = 7                         # 縦横のセル数
+CSIZE = 16
+catpng = "cat.png"
 
 class App:
     def __init__(self):
-        pyxel.init(200, 100, "動くタワーとお日さまC", fps)
-        pyxel.mouse(True)
-        self.deg = 0
+        pyxel.init(CSIZE*(CN1+1), CSIZE*(CN1+1) + 20, "スイカわり",
+                   fps = 5)     # チャタリング抑制にはfps=5など
+        if os.path.exists(catpng): 
+            pyxel.image(0).load(0, 0, catpng)
+        self.suika_x = pyxel.rndi(1, CN1)  # スイカのx座標 
+        self.suika_y = pyxel.rndi(1, CN1)  # スイカのy座標
+        self.player_x = pyxel.rndi(1, CN1) # プレイヤーのx座標
+        self.player_y = pyxel.rndi(1, CN1) # プレイヤーのy座標
         pyxel.run(self.update, self.draw)
-    def update(self):
-        pass
-    def draw(self):
-        if self.deg < 80 and pyxel.frame_count % fps == 0:
-            self.deg += 10 
-        redrawtower(self.deg)
 
-# ======================
+    def update(self):
+        if pyxel.btnp(pyxel.KEY_Q):
+            pyxel.quit()
+        self.dist = abs(self.player_x - self.suika_x) + abs(
+            self.player_y - self.suika_y)
+        if pyxel.btn(pyxel.KEY_LEFT) and self.player_x > 1:
+            self.player_x -= 1
+        if pyxel.btn(pyxel.KEY_RIGHT) and self.player_x < CN1:
+            self.player_x += 1
+        if pyxel.btn(pyxel.KEY_UP) and self.player_y > 1:
+            self.player_y -= 1
+        if pyxel.btn(pyxel.KEY_DOWN) and self.player_y < CN1:
+            self.player_y += 1
+    
+    def draw(self):
+        pyxel.cls(11)           # 
+        for j in range(1, CN1+1):
+            pyxel.line(CSIZE, CSIZE*j, CSIZE*CN1, CSIZE*j, 0)
+            for i in range(1, CN1+1):
+                pyxel.line(CSIZE*i, CSIZE, CSIZE*i, CSIZE*CN1, 0)
+        pyxel.blt(self.player_x * CSIZE-8, self.player_y * CSIZE-8,
+                  0, 0, 0, 16, 16, 9)
+        mes, color = f"Distance: {self.dist}", 0
+        if self.dist==0: mes, color = "Congratulations!", 8
+        pyxel.text(10, CSIZE*(CN1+1)+8, mes, color)
+
+# ゲームの実行 ===============================-
 App()
-        
+
+# 0=くろ, 1=こいあお, 2=むらさき, 3=みどり, 4=ちゃいろ, 5=あお
+# 6=いろ, 7=しろ, 8=あか, 9=オレンジ, 10=きいろ, 11=うすいみどり
+# 12=うすいあお, 13=はいいろ, 14=ピンク, 15=はだいろ

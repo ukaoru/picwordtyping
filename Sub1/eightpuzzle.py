@@ -1,4 +1,4 @@
-# Time-stamp: <2022-09-15 06:44:51 uchik>
+# Time-stamp: <2023-03-24 21:41:02 uchik>
 
 """ eightpuzzle.py (8パズル、または15パズル)
  空きマスの隣をクリックして動かす
@@ -65,7 +65,8 @@ class App:
         offset = SIZE*9//20
         mx = (pyxel.mouse_x // SIZE) * SIZE
         my = (pyxel.mouse_y // SIZE) * SIZE
-        pyxel.rect(mx, my, SIZE, SIZE, 12) # lightBlue
+        if l1norm(my//SIZE*three+mx//SIZE, self.stat.index(0)) == 1:
+            pyxel.rect(mx, my, SIZE, SIZE, 12) # lightBlue
         for j in range(three):
             pyxel.line(0, SIZE*j, SIZE*three, SIZE*j, 0)
             for i in range(three):

@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-11 17:43:26 uchik>
+# Time-stamp: <2023-05-11 17:49:01 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -15,7 +15,7 @@ from PIL import Image
 def inpstr():
     if input := st.session_state.txt:
         pic = '_tmpQR.png'
-        prstr = dt.datetime.now().strftime('%D %R')
+        prstr = dt.datetime.now().strftime('%c')
         msg = f'{input} @ {prstr} (プロチャレ2023)'
         print(msg)
         qrcode.make(msg).save(pic)

@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-11 17:25:04 uchik>
+# Time-stamp: <2023-05-11 17:43:26 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -22,7 +22,7 @@ def inpstr():
         img = Image.open(pic)
         img.thumbnail((200, 200), Image.Resampling.LANCZOS)
         st.image(img)
-        st.write('msg')
+        st.write(msg)
         st.write(f'スクショ後に画面を閉じてください')
 
 # --------------- main start

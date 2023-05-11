@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-11 18:47:46 uchik>
+# Time-stamp: <2023-05-11 18:53:38 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -29,8 +29,9 @@ def inpstr():
 if __name__ == "__main__":
     # executed only once at the beginning
     if not 'txt' in st.session_state:
-        st.text_input('名前などIDとなる文字列を入力して Enter', '',
+        st.text_input('名前などIDとなる文字列を入力して 「Enter」', '', 
                       key='txt', on_change=inpstr)
+        #st.button("Submit", on_click=inpstr)
 
 # --------------- main end            
     

@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-11 18:53:38 uchik>
+# Time-stamp: <2023-05-11 19:20:02 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -24,6 +24,8 @@ def inpstr():
         st.image(img)
         st.write(msg)
         st.write(f'スクショ後に画面を閉じてください')
+        with open('record.txt', mode='a') as f:
+            f.write('\n'+msg)      
 
 # --------------- main start
 if __name__ == "__main__":

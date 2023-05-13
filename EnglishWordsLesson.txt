@@ -1,4 +1,4 @@
-Apple/　　　　　L1
+Apple/	L1
 Banana/		L1
 Boiled egg/	L8
 Bowl/		L3

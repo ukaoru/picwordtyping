@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-14 07:56:59 uchik>
+# Time-stamp: <2023-05-14 08:00:18 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -79,7 +79,8 @@ if __name__ == "__main__":
         if not pathlib.Path(imgdir).exists(): sys.exit(0)
         #dirL = glob.glob(imgdir+'*')
 
-        with open('EnglishWordsLesson.txt', 'r', encoding="utf-8") as f:
+        with open('EnglishWordsLesson.txt', 'r',
+                  encoding="utf-8", errors='ignore') as f:
             wordlist = f.read().splitlines()
         dirL = []
         for s in wordlist[:]:

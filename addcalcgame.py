@@ -1,4 +1,4 @@
-# Time-stamp: <2023-04-10 15:36:14 uchik>
+# Time-stamp: <2023-05-13 10:58:22 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -11,6 +11,8 @@ import random
 import streamlit as st
 import gtts                     # Google TTS for pronunciation
 import base64, time             # for pronunciation autoplay
+
+uplim = 9                       # 20230513 sakamoto
 
 # autoplay pronunciation
 def soundautoplay(audiofile):
@@ -37,7 +39,7 @@ def gonext():
 
 # show a question and ask, called from init and gonext()
 def giveprob():
-    uplim = (10**st.session_state.level)//2 - 1
+    #uplim = (10**st.session_state.level)//2 - 1
     x = st.session_state.x = random.randint(1, uplim)
     y = st.session_state.y = random.randint(1, uplim)
     st.session_state.ans = x + y

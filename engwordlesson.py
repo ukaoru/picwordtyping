@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-14 07:45:39 uchik>
+# Time-stamp: <2023-05-14 07:56:59 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -79,14 +79,13 @@ if __name__ == "__main__":
         if not pathlib.Path(imgdir).exists(): sys.exit(0)
         #dirL = glob.glob(imgdir+'*')
 
-        with open('EnglishWordsLesson.txt', 'r') as f:
+        with open('EnglishWordsLesson.txt', 'r', encoding="utf-8") as f:
             wordlist = f.read().splitlines()
         dirL = []
         for s in wordlist[:]:
             if s.split()[-1] == 'L1':
                 dirL.append(imgdir + s[ : s.index('/')])
                 print(imgdir + s[ : s.index('/')], s.split()[-1])
-        
         print(len(dirL), dirL[:5], dirL[-5:])
         
         picL = [f for d in dirL for f in glob.glob(d+'/*')]

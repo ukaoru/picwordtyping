@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-14 19:06:34 uchik>
+# Time-stamp: <2023-05-14 19:16:54 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -31,7 +31,7 @@ def inpstr():
 if __name__ == "__main__":
     # executed only once at the beginning
     if not 'txt' in st.session_state:
-        st.text_input('名前 読み仮名 (e.g. 神谷王子 かみやおうこ) 「Enter」',
+        st.text_input('名前+読み仮名 (例「神谷王子 かみやおうこ」) 「Enter」',
                       '', key='txt', on_change=inpstr)
         #st.button("Submit", on_click=inpstr)
 

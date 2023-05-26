@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-14 08:00:18 uchik>
+# Time-stamp: <2023-05-24 09:58:17 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -75,21 +75,12 @@ def checkspell():
 if __name__ == "__main__":
     # executed only once at the beginning
     if not 'idx' in st.session_state:
-        imgdir = './Imagefolder/'
+        #imgdir = './Imagefolder/'
+        imgdir = './AddedImagefolder/'
         if not pathlib.Path(imgdir).exists(): sys.exit(0)
-        #dirL = glob.glob(imgdir+'*')
-
-        with open('EnglishWordsLesson.txt', 'r',
-                  encoding="utf-8", errors='ignore') as f:
-            wordlist = f.read().splitlines()
-        dirL = []
-        for s in wordlist[:]:
-            if s.split()[-1] == 'L1':
-                dirL.append(imgdir + s[ : s.index('/')])
-                print(imgdir + s[ : s.index('/')], s.split()[-1])
-        print(len(dirL), dirL[:5], dirL[-5:])
+        dirL = glob.glob(imgdir+'*')
         
-        picL = [f for d in dirL for f in glob.glob(d+'/*')]
+        picL = [f for d in dirL for f in glob.glob(d+'/*.jpg')]
         random.shuffle(picL)
         st.session_state.picL = picL
         st.session_state.point = st.session_state.idx = 0

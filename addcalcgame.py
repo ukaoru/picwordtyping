@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-13 10:58:22 uchik>
+# Time-stamp: <2023-05-26 14:14:09 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -42,8 +42,9 @@ def giveprob():
     #uplim = (10**st.session_state.level)//2 - 1
     x = st.session_state.x = random.randint(1, uplim)
     y = st.session_state.y = random.randint(1, uplim)
-    st.session_state.ans = x + y
-    msg = f'What is {x} + {y} ?'
+    #st.session_state.ans = x + y
+    st.session_state.ans = x - y
+    msg = f'What is {x} - {y} ?'
     speaktext(msg)
     st.text_input(msg, '', key='txt', on_change=checkans)
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
@@ -55,12 +56,12 @@ def checkans():
     x, y = st.session_state.x, st.session_state.y 
     if inp := st.session_state.txt:
         if inp.isdigit() and int(inp) == ans:
-            msg = f'Correct! {x} + {y} = {ans}.'
+            msg = f'Correct! {x} - {y} = {ans}.'
             st.write(msg)
             speaktext(msg)
             st.session_state.point += 1
         else:
-            msg = f'Wrong.  {x} + {y} = {ans}, not {inp}.'
+            msg = f'Wrong.  {x} - {y} = {ans}, not {inp}.'
             st.write(msg)
             speaktext(msg)
         st.session_state.txt  = ''  # to clear text_input box

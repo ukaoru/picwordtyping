@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-26 14:14:09 uchik>
+# Time-stamp: <2023-05-26 14:34:51 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -45,7 +45,8 @@ def giveprob():
     #st.session_state.ans = x + y
     st.session_state.ans = x - y
     msg = f'What is {x} - {y} ?'
-    speaktext(msg)
+    msg2 = f'What is {x} minus {y} ?'
+    speaktext(msg2)
     st.text_input(msg, '', key='txt', on_change=checkans)
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
     #print(st.session_state.idx, st.session_state.ans)
@@ -55,7 +56,7 @@ def checkans():
     idx, ans = st.session_state.idx, st.session_state.ans
     x, y = st.session_state.x, st.session_state.y 
     if inp := st.session_state.txt:
-        if inp.isdigit() and int(inp) == ans:
+        if inp.replace('-', '').isdigit() and int(inp) == ans:
             msg = f'Correct! {x} - {y} = {ans}.'
             st.write(msg)
             speaktext(msg)

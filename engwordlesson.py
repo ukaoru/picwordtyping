@@ -1,4 +1,4 @@
-# Time-stamp: <2023-06-07 15:34:35 uchik>
+# Time-stamp: <2023-06-07 15:44:51 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -78,7 +78,8 @@ if __name__ == "__main__":
         #imgdir = './Imagefolder/'
         imgdir = './AddedImagefolder/'
         if not pathlib.Path(imgdir).exists(): sys.exit(0)
-        lessonL = [os.path.basename(f) for f in glob.glob(imgdir+'*')]
+        lessonL = [os.path.basename(f) for f
+                   in sorted(glob.glob(imgdir+'*'))]
         sel = st.radio("Choose one", lessonL) 
         dirL = glob.glob(imgdir+sel+'/*')
         if st.button(label='Submit'):

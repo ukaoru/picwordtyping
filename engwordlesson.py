@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-24 09:58:17 uchik>
+# Time-stamp: <2023-06-07 15:34:35 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -9,7 +9,7 @@ needs: pip install streamlit, gTTS
 requires: gTTS
 """
 
-import glob, random, pathlib, sys
+import glob, random, pathlib, sys, os
 import streamlit as st
 from PIL import Image
 import gtts                     # Google TTS for pronunciation
@@ -78,15 +78,20 @@ if __name__ == "__main__":
         #imgdir = './Imagefolder/'
         imgdir = './AddedImagefolder/'
         if not pathlib.Path(imgdir).exists(): sys.exit(0)
-        dirL = glob.glob(imgdir+'*')
+        lessonL = [os.path.basename(f) for f in glob.glob(imgdir+'*')]
+        sel = st.radio("Choose one", lessonL) 
+        dirL = glob.glob(imgdir+sel+'/*')
+        if st.button(label='Submit'):
+            print(dirL)
         
-        picL = [f for d in dirL for f in glob.glob(d+'/*.jpg')]
-        random.shuffle(picL)
-        st.session_state.picL = picL
-        st.session_state.point = st.session_state.idx = 0
+            picL = [f for d in dirL for f in glob.glob(d+'/*.jpg')]
+            random.shuffle(picL)
+            st.session_state.picL = picL
+            st.session_state.point = st.session_state.idx = 0
+            st.write(f'Nwords: {len(dirL)}, Npics: {len(picL)}')
+            st.markdown('&copy; 2023 NPO Challengepro')
         
-        askword()
-        st.write(f'Nwords: {len(dirL)}, Npics: {len(picL)}')
-        st.markdown('&copy; 2023 NPO Challengepro')
+            askword()
+
 # --------------- main end            
     

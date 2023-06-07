@@ -1,4 +1,4 @@
-# Time-stamp: <2023-06-07 15:44:51 uchik>
+# Time-stamp: <2023-06-07 15:49:02 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -83,8 +83,7 @@ if __name__ == "__main__":
         sel = st.radio("Choose one", lessonL) 
         dirL = glob.glob(imgdir+sel+'/*')
         if st.button(label='Submit'):
-            print(dirL)
-        
+            #print(dirL)
             picL = [f for d in dirL for f in glob.glob(d+'/*.jpg')]
             random.shuffle(picL)
             st.session_state.picL = picL

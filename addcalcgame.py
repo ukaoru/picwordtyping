@@ -1,4 +1,4 @@
-# Time-stamp: <2023-05-13 10:58:22 uchik>
+# Time-stamp: <2023-05-28 19:44:58 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -43,8 +43,10 @@ def giveprob():
     x = st.session_state.x = random.randint(1, uplim)
     y = st.session_state.y = random.randint(1, uplim)
     st.session_state.ans = x + y
-    msg = f'What is {x} + {y} ?'
-    speaktext(msg)
+    #st.session_state.ans = x - y
+    #msg2 = f'What is {x} minus {y} ?'
+    msg2 = msg = f'What is {x} + {y} ?'
+    speaktext(msg2)
     st.text_input(msg, '', key='txt', on_change=checkans)
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
     #print(st.session_state.idx, st.session_state.ans)
@@ -54,15 +56,17 @@ def checkans():
     idx, ans = st.session_state.idx, st.session_state.ans
     x, y = st.session_state.x, st.session_state.y 
     if inp := st.session_state.txt:
-        if inp.isdigit() and int(inp) == ans:
-            msg = f'Correct! {x} + {y} = {ans}.'
+        if inp.replace('-', '').isdigit() and int(inp) == ans:
+            #msg2 = f'Correct! {x} minus {y} = {ans}.'
+            msg2 = msg = f'Correct! {x} + {y} = {ans}.'
             st.write(msg)
-            speaktext(msg)
+            speaktext(msg2)
             st.session_state.point += 1
         else:
-            msg = f'Wrong.  {x} + {y} = {ans}, not {inp}.'
+            #msg2 = f'Wrong.  {x} minus {y} = {ans}, not {inp}.'
+            msg2 = msg = f'Wrong.  {x} + {y} = {ans}, not {inp}.'
             st.write(msg)
-            speaktext(msg)
+            speaktext(msg2)
         st.session_state.txt  = ''  # to clear text_input box
         if idx % 10 == 9: st.balloons()
     else:

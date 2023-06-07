@@ -1,4 +1,4 @@
-# Time-stamp: <2023-06-07 15:52:22 uchik>
+# Time-stamp: <2023-06-07 15:53:42 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -81,8 +81,8 @@ if __name__ == "__main__":
         lessonL = [os.path.basename(f) for f
                    in sorted(glob.glob(imgdir+'*'))]
         sel = st.radio("Choose one", lessonL) 
+        dirL = glob.glob(imgdir+sel+'/*')
         if st.button(label='Submit'):
-            dirL = glob.glob(imgdir+sel+'/*')
             #print(dirL)
             picL = [f for d in dirL for f in glob.glob(d+'/*.jpg')]
             random.shuffle(picL)

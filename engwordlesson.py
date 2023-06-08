@@ -1,4 +1,4 @@
-# Time-stamp: <2023-06-07 15:53:42 uchik>
+# Time-stamp: <2023-06-09 07:37:53 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -38,6 +38,7 @@ def showimg():
 # go to the next image, called by the next button
 def gonext():
     st.session_state.idx += 1
+    st.session_state.txt  = ''  # to clear text_input box
     askword()
 
 # show an image and ask, called from init and gonext()
@@ -57,20 +58,24 @@ def checkspell():
         if input.lower() == ans.lower():
             st.write(f'{idx}: "{ans}" Correct!')
             st.session_state.point += 1
-            st.button("Next", on_click=gonext)
+            #st.button("Next", on_click=gonext)
         else:
             st.write(f'{idx}: It is not "{input}", but "{ans}"')
-            st.text_input('Type yourself', '', key='txt1', on_change=gonext)
+            st.text_area('Type yourself', placeholder=ans)
+            #, on_change=gonext)
         st.session_state.txt  = ''  # to clear text_input box
-        if idx % 20 == 19: st.balloons()
     else:
         st.write(f'{idx}: This is "{ans}"')
-        st.text_input('Type yourself', '', key='txt1', on_change=gonext)
+        st.text_area('Type yourself', placeholder=ans)
+        #, on_change=gonext)
+
+    st.button("Next", on_click=gonext)
     st.write(f'Score: {st.session_state.point} / {idx+1}')
+    if idx % 20 == 19: st.balloons()
     gtts.gTTS(ans).save(tmpaudiofile)
     soundautoplay(tmpaudiofile)
     st.audio(tmpaudiofile)
-
+    
 # --------------- main start
 if __name__ == "__main__":
     # executed only once at the beginning

@@ -1,4 +1,4 @@
-# Time-stamp: <2023-06-09 07:37:53 uchik>
+# Time-stamp: <2023-06-24 11:13:28 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -15,6 +15,7 @@ from PIL import Image
 import gtts                     # Google TTS for pronunciation
 import base64, time             # for pronunciation autoplay
 
+tmpaudiofile = '_tmp.mp3'
 # autoplay pronunciation
 def soundautoplay(audiofile):
     audio_placeholder = st.empty()
@@ -38,20 +39,24 @@ def showimg():
 # go to the next image, called by the next button
 def gonext():
     st.session_state.idx += 1
-    st.session_state.txt  = ''  # to clear text_input box
+    st.session_state.txt = st.session_state.txt2 = ''  # to clear text_input 
     askword()
 
 # show an image and ask, called from init and gonext()
 def askword():
     st.text_input('What is this?', '', key='txt', on_change=checkspell)
     showimg()
-    st.button("Hint", on_click=checkspell)
+    ans = st.session_state.ans
+    gtts.gTTS(ans).save(tmpaudiofile)
+    #soundautoplay(tmpaudiofile)
+    st.audio(tmpaudiofile)
+    
+    st.button("Hint", on_click=checkspell, key='ask')
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
     #print(st.session_state.idx, st.session_state.ans)
 
 # check the spelling, called by the text_input ENTER
 def checkspell():
-    tmpaudiofile = '_tmp.mp3'
     showimg()
     idx, ans = st.session_state.idx, st.session_state.ans
     if input := st.session_state.txt:
@@ -61,15 +66,15 @@ def checkspell():
             #st.button("Next", on_click=gonext)
         else:
             st.write(f'{idx}: It is not "{input}", but "{ans}"')
-            st.text_area('Type yourself', placeholder=ans)
-            #, on_change=gonext)
+            st.text_input('Type yourself', on_change=gonext,
+                          placeholder=ans, key='null')
         st.session_state.txt  = ''  # to clear text_input box
     else:
         st.write(f'{idx}: This is "{ans}"')
-        st.text_area('Type yourself', placeholder=ans)
+        st.text_area('Type yourself', key='txt2', placeholder=ans)
         #, on_change=gonext)
 
-    st.button("Next", on_click=gonext)
+    st.button("Next", on_click=gonext, key='next')
     st.write(f'Score: {st.session_state.point} / {idx+1}')
     if idx % 20 == 19: st.balloons()
     gtts.gTTS(ans).save(tmpaudiofile)

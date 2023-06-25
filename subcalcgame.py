@@ -1,9 +1,9 @@
-# Time-stamp: <2023-06-25 14:31:02 uchik>
+# Time-stamp: <2023-06-25 14:31:38 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
 
-""" addcalcgame.py : number adding game
+""" subcalcgame.py : subtraction 
 needs: pip install streamlit, gTTS
 requires: gTTS
 """
@@ -12,7 +12,7 @@ import streamlit as st
 import gtts                     # Google TTS for pronunciation
 import base64, time             # for pronunciation autoplay
 
-uplim = 20
+uplim = 9                       # 20230513 sakamoto
 
 # autoplay pronunciation
 def soundautoplay(audiofile):
@@ -42,8 +42,11 @@ def giveprob():
     #uplim = (10**st.session_state.level)//2 - 1
     x = st.session_state.x = random.randint(1, uplim)
     y = st.session_state.y = random.randint(1, uplim)
-    st.session_state.ans = x + y
-    msg2 = msg = f'What is {x} + {y} ?'
+    #st.session_state.ans = x + y
+    #msg2 = msg = f'What is {x} + {y} ?'
+    st.session_state.ans = x - y
+    msg = f'What is {x} - {y} ?'
+    msg2 = f'What is {x} minus {y} ?'
     speaktext(msg2)
     st.text_input(msg, '', key='txt', on_change=checkans)
     st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
@@ -55,12 +58,16 @@ def checkans():
     x, y = st.session_state.x, st.session_state.y 
     if inp := st.session_state.txt:
         if inp.replace('-', '').isdigit() and int(inp) == ans:
-            msg2 = msg = f'Correct! {x} + {y} = {ans}.'
+            #msg2 = msg = f'Correct! {x} + {y} = {ans}.'
+            msg = f'Correct! {x} - {y} = {ans}.'
+            msg2 = f'Correct! {x} minus {y} = {ans}.'
             st.write(msg)
             speaktext(msg2)
             st.session_state.point += 1
         else:
-            msg2 = msg = f'Wrong.  {x} + {y} = {ans}, not {inp}.'
+            #msg2 = msg = f'Wrong.  {x} + {y} = {ans}, not {inp}.'
+            msg = f'Wrong.  {x} - {y} = {ans}, not {inp}.'
+            msg2 = f'Wrong.  {x} minus {y} = {ans}, not {inp}.'
             st.write(msg)
             speaktext(msg2)
         st.session_state.txt  = ''  # to clear text_input box

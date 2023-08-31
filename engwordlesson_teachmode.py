@@ -3,10 +3,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-""" engwordlesson.py = Picwordtyping ｰ using streamlit
+""" engwordlesson_teachmode.py = Vocab Teach Mode ｰ using streamlit
  use limited-scale word list
-needs: pip install streamlit, gTTS
-requires: gTTS
+needs: pip install streamlit, gTTS, streamlit-option-menu
+requires: gTTS, streamlit-option-menu
 """
 
 import glob, random, pathlib, sys, os

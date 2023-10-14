@@ -1,0 +1,32 @@
+# Time-stamp: <2023-05-11 17:01:39 uchik>
+
+#!/usr/bin/env python
+# coding: utf-8
+
+""" makeProchQR.py w/ streamlit
+needs: pip install streamlit qrcode
+"""
+
+import datetime as dt
+import qrcode
+import streamlit as st
+
+def inpstr():
+    if input := st.session_state.txt:
+        prstr = dt.datetime.now().strftime('%H:%M:%S')
+        msg = f'{input} @ {prstr} (Prochalle)'
+        print(msg)
+        img = qrcode.make(msg)
+        st.image(img)
+        st.write(f'文字列は{msg}。スクショしてください')
+        st.write(f'画面を閉じてください')
+        
+
+# --------------- main start
+if __name__ == "__main__":
+    # executed only once at the beginning
+    st.text_input('名前などIDとなる文字列を入力してください?', '',
+                  key='txt', on_change=inpstr)
+
+# --------------- main end            
+    

@@ -20,8 +20,7 @@ def check():
         
     st.write(msg)
     #st.session_state.inp  = ''  # to clear text_input box
-    st.write(f'Score: {st.session_state.point} / {
-             st.session_state.idx}')
+    st.write(f'Score: {st.session_state.point} / {st.session_state.idx}')
     st.button("Next", on_click=ask)
 
 # --------------- main start

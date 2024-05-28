@@ -33,7 +33,7 @@ def check():
 if not 'idx' in st.session_state:
     file = 'worldcapitals.xlsx'
     dirname =  os.path.dirname(__file__)
-    file = dirname + '/'
+    file = dirname + '/' + file
     df = pd.read_excel(file, index_col='Country')[:40]
     st.session_state.D = D = df.to_dict(orient='index')
     st.session_state.qL = list(D)

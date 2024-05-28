@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import gtts
-import random
+import random, os
 
 fname = 'sound.mp3'
 
@@ -32,6 +32,8 @@ def check():
 # ----------
 if not 'idx' in st.session_state:
     file = 'worldcapitals.xlsx'
+    dirname =  os.path.dirname(__file__)
+    file = dirname + '/'
     df = pd.read_excel(file, index_col='Country')[:40]
     st.session_state.D = D = df.to_dict(orient='index')
     st.session_state.qL = list(D)

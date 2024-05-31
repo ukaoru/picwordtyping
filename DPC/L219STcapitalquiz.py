@@ -7,7 +7,7 @@ import base64, time             # for pronunciation autoplay
 fname = 'sound.mp3'
 
 def speaktext(txt, lang='en'):
-    gtts.gTTS(txt).save(fname)
+    gtts.gTTS(txt, lang=lang).save(fname)
     #st.audio(fname)
     audio_placeholder = st.empty()
     with open(fname, "rb") as f:

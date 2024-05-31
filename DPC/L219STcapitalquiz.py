@@ -2,12 +2,23 @@ import streamlit as st
 import pandas as pd
 import gtts
 import random, os
+import base64, time             # for pronunciation autoplay
 
 fname = 'sound.mp3'
 
 def speaktext(txt, lang='en'):
     gtts.gTTS(txt).save(fname)
-    st.audio(fname)
+    #st.audio(fname)
+    audio_placeholder = st.empty()
+    with open(fname, "rb") as f:
+        contents = f.read()
+    audioS = "data:audio/ogg;base64,%s"%(base64.b64encode(contents).decode())
+    audio_html = """<audio autoplay=True>
+                    <source src="%s" type="audio/ogg"></audio>"""%audioS
+    #audio_placeholder.empty()
+    time.sleep(0.8)             # need this
+    audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
+   
 
 def ask():
     st.session_state.prob = prob = random.choice(st.session_state.qL)   
@@ -39,6 +50,7 @@ if not 'idx' in st.session_state:
     st.session_state.qL = list(D)
     st.session_state.idx = st.session_state.point = 0
     
+    speaktext('Hello, let us start the quiz.')
     ask()
     
 

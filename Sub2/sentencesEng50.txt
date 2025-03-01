@@ -1,0 +1,50 @@
+Hello.  
+Good morning.  
+Good afternoon.  
+Good evening.  
+Goodbye.  
+Thank you.  
+Excuse me.  
+Please.  
+Yes, please.  
+No, thank you.  
+I'm sorry.  
+Can you help me?  
+Where is the restroom?  
+How much is this?  
+I’d like to buy this.  
+Do you accept credit cards?  
+Can I get a receipt?  
+What time is it?  
+Where is the nearest ATM?  
+I need a taxi.  
+Where is the nearest bus stop?  
+Which train goes to this station?  
+How long does it take to get there?  
+Could you write it down, please?  
+I don’t understand.  
+Can you speak slower, please?  
+Do you speak English?  
+I don’t speak much English.  
+Can you recommend a good restaurant?  
+I’d like a table for two, please.  
+Can I see the menu?  
+What do you recommend?  
+I have a food allergy.  
+Can I have the bill, please?  
+Is service included?  
+Where is my hotel?  
+I have a reservation.  
+Can I check in?  
+Can I have the Wi-Fi password?  
+What time is breakfast?  
+Can I get a wake-up call?  
+I lost my passport.  
+Can you call the police?  
+I need a doctor.  
+Where is the nearest pharmacy?  
+I feel sick.  
+Can you show me on the map?  
+I’m just looking, thank you.  
+That was delicious!  
+See you again!

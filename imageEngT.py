@@ -5,8 +5,8 @@
 
 """ imageEngT.py  w/ Teacher-mode by Shaun
  use all words in Imagefolder and AddedImagefolder
-needs: pip install streamlit, gTTS
-requires: gTTS
+needs: pip install streamlit, gTTS, SpeechRecognition, PyAudio
+requires: gTTS, SpeechRecognition, PyAudio
 """
 
 import glob, random, pathlib, sys, os
@@ -15,6 +15,29 @@ from streamlit_option_menu import option_menu
 from PIL import Image
 import gtts                     # Google TTS for pronunciation
 import base64, time             # for pronunciation autoplay
+import speech_recognition as sr
+
+def record_and_recognize_speech(timeout, recognition_api='google', language='en-US'):
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        audio_text = r.record(source, timeout)
+
+    text = ""
+    error = ""
+    try:
+        if recognition_api == 'google':
+            text = r.recognize_google(audio_text, language=language)
+        else:
+            error = "Sorry, I did not understand that."
+    except sr.UnknownValueError:
+        error = "Sorry, I did not understand the speech. Please try again."
+    except sr.WaitTimeoutError:
+        error = "Sorry, I did hear any speech. Please try again."
+    except sr.RequestError as e:
+        error = f"Error: {e}. Please check your API credentials or internet connection."
+    except Exception as e:
+        error = f"Unexpected error: {e}. Please try again later."
+    return text, error
 
 tmpaudiofile = '_tmp.mp3'
 # autoplay pronunciation
@@ -44,6 +67,9 @@ def changeCategory(key):
     random.shuffle(images)
     st.session_state.images = images
     st.session_state.showAnswer = False
+    st.session_state.playedAnswer = False
+    st.session_state.recordingError = ""
+    st.session_state.recordedText = ""
     st.session_state.idx = 0
 
 if (not 'curCategory' in st.session_state) or (
@@ -55,6 +81,9 @@ if (not 'curCategory' in st.session_state) or (
 
 def decrementIndex():
     st.session_state.showAnswer = False
+    st.session_state.playedAnswer = False
+    st.session_state.recordingError = ""
+    st.session_state.recordedText = ""
     nextIdx = st.session_state.idx - 1
     if (nextIdx < 0):
         nextIdx = len(st.session_state.images) - 1
@@ -62,6 +91,9 @@ def decrementIndex():
 
 def incrementIndex():
     st.session_state.showAnswer = False
+    st.session_state.playedAnswer = False
+    st.session_state.recordingError = ""
+    st.session_state.recordedText = ""
     nextIdx = st.session_state.idx + 1
     if (nextIdx >= len(st.session_state.images)):
         nextIdx = 0
@@ -97,8 +129,28 @@ with mainCol:
     if st.session_state.showAnswer:
         st.subheader(st.session_state.ans)
         gtts.gTTS(st.session_state.ans).save(tmpaudiofile)
-        soundautoplay(tmpaudiofile)
         st.audio(tmpaudiofile)
+        if not st.session_state.playedAnswer:
+            st.session_state.playedAnswer = True
+            soundautoplay(tmpaudiofile)
+
+    if st.button("Record"):
+        recognition_api = "google"
+        language = "en-US"
+        timeout = 2 # seconds
+        with st.spinner("Speak now..."):
+            text, error = record_and_recognize_speech(timeout, recognition_api, language)
+            st.session_state.recordedText = text
+            st.session_state.recordingError = error
+        
+        if st.session_state.recordingError != "":
+            st.write(st.session_state.recordingError)
+        elif st.session_state.recordedText != "":
+            st.write("What was heard: ", st.session_state.recordedText)
+            if st.session_state.recordedText.lower() == st.session_state.ans:
+                st.write("BINGO")
+            else:
+                st.write("ERROR")
 
 
 st.markdown('&copy; 2023 NPO Challengepro')

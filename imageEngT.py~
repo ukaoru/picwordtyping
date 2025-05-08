@@ -1,4 +1,4 @@
-# Time-stamp: <2025-05-09 06:11:45 uchik>
+# Time-stamp: <2023-08-31 09:21:22 uchik>
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -158,4 +158,4 @@ with mainCol:
                 st.write("ERROR")
 
 
-st.markdown('&copy; 2025 NPO Challengepro (Special Thanks to Shaun)')
+st.markdown('&copy; 2023 NPO Challengepro')

@@ -2,6 +2,3 @@ gTTS
 qrcode
 streamlit-option-menu
 SpeechRecognition
-portaudio19-dev
-python3-all-dev
-PyAudio

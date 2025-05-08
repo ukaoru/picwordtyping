@@ -17,27 +17,34 @@ import gtts                     # Google TTS for pronunciation
 import base64, time             # for pronunciation autoplay
 import speech_recognition as sr
 
-def record_and_recognize_speech(timeout, recognition_api='google', language='en-US'):
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        audio_text = r.record(source, timeout)
-
+def recognize_speech(audio_value, recognition_api='google', language='en-US'):
     text = ""
     error = ""
-    try:
-        if recognition_api == 'google':
-            text = r.recognize_google(audio_text, language=language)
-        else:
-            error = "Sorry, I did not understand that."
-    except sr.UnknownValueError:
-        error = "Sorry, I did not understand the speech. Please try again."
-    except sr.WaitTimeoutError:
-        error = "Sorry, I did hear any speech. Please try again."
-    except sr.RequestError as e:
-        error = f"Error: {e}. Please check your API credentials or internet connection."
-    except Exception as e:
-        error = f"Unexpected error: {e}. Please try again later."
+    
+    with sr.AudioFile(audio_value) as source:
+        r = sr.Recognizer()
+        audio_text = r.record(source)
+        
+        try:
+            if recognition_api == 'google':
+                text = r.recognize_google(audio_text, language=language)
+            else:
+                error = "Sorry, I did not understand that."
+        except sr.UnknownValueError:
+            error = "Sorry, I did not understand the speech. Please try again."
+        except sr.WaitTimeoutError:
+            error = "Sorry, I did hear any speech. Please try again."
+        except sr.RequestError as e:
+            error = f"Error: {e}. Please check your API credentials or internet connection."
+        except Exception as e:
+            error = f"Unexpected error: {e}. Please try again later."
     return text, error
+
+def reset_recognized_speach_state_variables():
+    st.session_state.recordingError = ""
+    st.session_state.recordedText = ""
+    if "recorded_answer" in st.session_state:
+        del st.session_state["recorded_answer"]
 
 tmpaudiofile = '_tmp.mp3'
 # autoplay pronunciation
@@ -68,8 +75,7 @@ def changeCategory(key):
     st.session_state.images = images
     st.session_state.showAnswer = False
     st.session_state.playedAnswer = False
-    st.session_state.recordingError = ""
-    st.session_state.recordedText = ""
+    reset_recognized_speach_state_variables()
     st.session_state.idx = 0
 
 if (not 'curCategory' in st.session_state) or (
@@ -82,8 +88,7 @@ if (not 'curCategory' in st.session_state) or (
 def decrementIndex():
     st.session_state.showAnswer = False
     st.session_state.playedAnswer = False
-    st.session_state.recordingError = ""
-    st.session_state.recordedText = ""
+    reset_recognized_speach_state_variables()
     nextIdx = st.session_state.idx - 1
     if (nextIdx < 0):
         nextIdx = len(st.session_state.images) - 1
@@ -92,8 +97,7 @@ def decrementIndex():
 def incrementIndex():
     st.session_state.showAnswer = False
     st.session_state.playedAnswer = False
-    st.session_state.recordingError = ""
-    st.session_state.recordedText = ""
+    reset_recognized_speach_state_variables()
     nextIdx = st.session_state.idx + 1
     if (nextIdx >= len(st.session_state.images)):
         nextIdx = 0
@@ -133,13 +137,14 @@ with mainCol:
         if not st.session_state.playedAnswer:
             st.session_state.playedAnswer = True
             soundautoplay(tmpaudiofile)
+            reset_recognized_speach_state_variables()
 
-    if st.button("Record"):
+    audio_value = st.audio_input("Record (must press stop manually)", key="recorded_answer")
+    if audio_value:
         recognition_api = "google"
         language = "en-US"
-        timeout = 2 # seconds
-        with st.spinner("Speak now..."):
-            text, error = record_and_recognize_speech(timeout, recognition_api, language)
+        with st.spinner("Working..."):
+            text, error = recognize_speech(audio_value, recognition_api, language)
             st.session_state.recordedText = text
             st.session_state.recordingError = error
         

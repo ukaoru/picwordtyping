@@ -5,8 +5,8 @@
 
 """ imageEngT.py  w/ Teacher-mode by Shaun
  use all words in Imagefolder and AddedImagefolder
-needs: pip install streamlit, gTTS, SpeechRecognition, PyAudio
-requires: gTTS, SpeechRecognition, PyAudio
+needs: pip install streamlit, gTTS, SpeechRecognition
+requires: gTTS, SpeechRecognition
 """
 
 import glob, random, pathlib, sys, os

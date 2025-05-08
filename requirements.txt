@@ -2,3 +2,4 @@ gTTS
 qrcode
 streamlit-option-menu
 SpeechRecognition
+PyAudio
